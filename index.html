@@ -3,38 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playful Cooking Website</title>
+    <title>Product Shop</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Welcome to The Playful Kitchen!</h1>
-        <p>Your home for fun and delicious recipes</p>
+        <h1>Welcome to The Product Shop!</h1>
+        <p>Buy our premium product for a great experience.</p>
     </header>
 
     <main>
-        <section class="intro">
-            <h2>Let’s Get Cooking!</h2>
-            <p>Explore our colorful and tasty recipes, packed with personality and flavor.</p>
-            <button onclick="alert('Explore our recipes!')">Explore Recipes</button>
-        </section>
-
-        <section class="recipes">
-            <div class="recipe-card">
-                <h3>Cheerful Veggie Pasta</h3>
-                <p>A colorful mix of veggies and pasta for a fun dinner.</p>
-                <button onclick="alert('View Recipe')">View Recipe</button>
-            </div>
-            <div class="recipe-card">
-                <h3>Happy Fruit Salad</h3>
-                <p>Bright, juicy fruits with a zesty twist.</p>
-                <button onclick="alert('View Recipe')">View Recipe</button>
-            </div>
+        <section class="product">
+            <h2>Awesome Product</h2>
+            <p>High-quality, feature-rich, and perfect for you!</p>
+            <p><strong>Price: $29.99</strong></p>
+            <button id="buyButton">Buy Now</button>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 The Playful Kitchen | All Rights Reserved</p>
+        <p>&copy; 2024 The Product Shop | All Rights Reserved</p>
     </footer>
+
+    <!-- Include Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        // Initialize Stripe
+        const stripe = Stripe('YOUR_PUBLISHABLE_KEY'); // Replace with your publishable key
+
+        document.getElementById('buyButton').addEventListener('click', () => {
+            fetch('/create-checkout-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(session => {
+                return stripe.redirectToCheckout({ sessionId: session.id });
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html>
